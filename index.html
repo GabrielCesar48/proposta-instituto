@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F2F3F1">
-<meta name="description" content="Depois do vídeo, conte qual caminho faz sentido para o Instituto. Leva uns 3 minutos.">
+<meta name="description" content="Depois do vídeo, conte qual proposta faz sentido para o Instituto. Leva uns 3 minutos.">
 <meta property="og:title" content="Proposta do Instituto">
-<meta property="og:description" content="Depois do vídeo, conte qual caminho faz sentido para o Instituto. Leva uns 3 minutos.">
+<meta property="og:description" content="Depois do vídeo, conte qual proposta faz sentido para o Instituto. Leva uns 3 minutos.">
 <meta property="og:type" content="website">
 <meta name="robots" content="noindex">
 <title>Proposta do Instituto</title>
@@ -73,7 +73,7 @@
   .small { font-size: 15px; color: var(--chumbo); }
   p { margin: 0; }
 
-  /* Boas-vindas: os dois caminhos do vídeo */
+  /* Boas-vindas: as duas propostas do vídeo */
   .paths { background: var(--papel); border: 1px solid var(--traco); border-radius: var(--r); }
   .path { display: grid; gap: 4px; padding: 16px; }
   .path + .path { border-top: 1px solid var(--traco); }
@@ -177,20 +177,25 @@
     { id: 'voce', t: 'Sobre você', qs: [
       { id: 'nome', type: 'text', t: 'Qual é o seu nome?', ph: 'Ex.: Felipe' }
     ]},
-    { id: 'caminho', t: 'O caminho', qs: [
-      { id: 'caminho', type: 'radio', t: 'Qual caminho faz mais sentido agora?', o: [
-        { t: 'Caminho 1: site e landing pages', d: 'Site do Instituto, páginas de vocês dois, landing pages por serviço e contato pelo WhatsApp e formulário, já com a medição básica.', k: 'Caminho 1' },
-        { t: 'Caminho 2: site, landing pages e painel', d: 'Tudo do caminho 1, mais o painel que junta anúncios, site e contatos até saber quem agendou e quem compareceu.', k: 'Caminho 2' },
-        { t: 'Caminho 2 com o assistente de IA', d: 'O painel e um assistente que responde perguntas sobre os números, sem mexer em campanha nem em orçamento.', k: 'Caminho 2 com IA' },
+    { id: 'proposta', t: 'A proposta', qs: [
+      { id: 'proposta', type: 'radio', t: 'Qual proposta faz mais sentido agora?', o: [
+        { t: 'Proposta 1: site e landing pages', d: 'Site do Instituto, uma página para cada profissional e landing pages para os anúncios, com contato pelo WhatsApp e pelo formulário.', k: 'Proposta 1' },
+        { t: 'Proposta 2: site, landing pages e painel', d: 'Tudo da proposta 1, mais um painel que mostra todo dia os números do Google Ads e do Meta Ads e aponta sinais de atenção. O painel só lê os dados.', k: 'Proposta 2' },
         { t: 'Ainda não sei', d: 'Prefiro conversar antes de decidir.', k: 'Ainda não sabe' }
       ]},
-      { id: 'motivo', type: 'area', t: 'O que pesou nessa escolha?', ph: 'Ex.: ainda não anunciamos, então o painel pode esperar' }
+      { id: 'motivo', type: 'area', t: 'O que pesou nessa escolha?', ph: 'Ex.: ainda não anunciamos, então o painel pode esperar' },
+      { id: 'lps', type: 'radio', t: 'Como vocês preferem as landing pages?', o: [
+        { t: 'Uma por procedimento', d: 'O anúncio e a página falam da mesma coisa. São mais páginas para escrever e revisar.' },
+        { t: 'Uma para cada profissional', d: 'Mais simples de manter, com os procedimentos em seções.' },
+        { t: 'Começar com uma por profissional', d: 'E abrir páginas próprias só para os procedimentos que forem anunciados.' },
+        'Ainda não sei'
+      ]},
+      { id: 'procedimentos', type: 'area', t: 'Quais procedimentos vocês pretendem anunciar primeiro?', ph: 'Ex.: implante zigomático, protocolo' }
     ]},
     { id: 'anuncios', t: 'Anúncios e contatos', qs: [
       { id: 'anuncios', type: 'check', t: 'Onde vocês anunciam hoje?', o: ['No Google', 'No Instagram ou no Facebook', 'Ainda não anunciamos, mas queremos começar', 'Não pretendemos anunciar'], ex: ['Ainda não anunciamos, mas queremos começar', 'Não pretendemos anunciar'] },
       { id: 'gestor', type: 'radio', t: 'Quem cuida dos anúncios?', o: ['Nós mesmos', 'Uma agência ou um gestor de tráfego', 'Ninguém ainda'] },
-      { id: 'atende', type: 'radio', t: 'Quem vai responder quem chamar pelo site?', o: ['Eu respondo', 'Alguém da recepção', 'Cada profissional responde os seus', 'Ainda não definimos'] },
-      { id: 'status', type: 'radio', t: 'Essa pessoa conseguiria marcar quem agendou e quem compareceu?', hint: 'É isso que deixa o painel mostrar qual anúncio traz paciente.', o: ['Sim', 'Sim, se for bem simples', 'Não', 'Não sei'] }
+      { id: 'atende', type: 'radio', t: 'Quem vai responder quem chamar pelo site?', o: ['Eu respondo', 'Alguém da recepção', 'Cada profissional responde os seus', 'Ainda não definimos'] }
     ]},
     { id: 'site', t: 'Para começar o site', qs: [
       { id: 'nome_inst', type: 'text', t: 'Qual vai ser o nome do Instituto?', hint: 'Se ainda não decidiram, é só pular.', ph: 'O nome ou as opções que vocês estão pensando' },
@@ -212,7 +217,7 @@
   STEPS.push({ k: 'done' });
   var FIRST_Q = 1, REVIEW = STEPS.length - 2, DONE = STEPS.length - 1;
 
-  var KEY = 'proposta-instituto-v1';
+  var KEY = 'proposta-instituto-v2';
   var state = { step: 0, a: {}, mode: '' }; /* mode no final: sent | whatsapp | error */
   var fromReview = false;
   var resumeStep = 0;
@@ -259,8 +264,8 @@
     if (!p.length) return '';
     return /^(dra?\.?|doutora?)$/i.test(p[0]) && p[1] ? p[0] + ' ' + p[1] : p[0];
   }
-  function caminhoCurto() {
-    var a = state.a.caminho;
+  function propostaCurta() {
+    var a = state.a.proposta;
     var o = FORM[1].qs[0].o.filter(function (x) { return x.t === a; })[0];
     return o ? o.k : '';
   }
@@ -281,15 +286,15 @@
   /* ---------- Telas ---------- */
   function htmlWelcome() {
     var h = '<div class="step">' +
-      '<h1 class="display" tabindex="-1">Qual caminho faz sentido para vocês?</h1>' +
+      '<h1 class="display" tabindex="-1">Qual proposta faz sentido para vocês?</h1>' +
       '<p class="lead">Depois de ver o vídeo, responda por aqui. As respostas vão direto para o Gabriel.</p>' +
       '<div class="paths">' +
-        '<div class="path"><span class="path-t">Caminho 1: site e landing pages</span>' +
-          '<span class="path-d">Site do Instituto, páginas do Dr. Felipe e da Dra. Brenda, landing pages por serviço e contato pelo WhatsApp e formulário, já com a medição básica.</span></div>' +
-        '<div class="path"><span class="path-t">Caminho 2: site, landing pages e painel</span>' +
-          '<span class="path-d">Tudo do caminho 1, mais um painel que junta Google Ads, anúncios do Instagram e do Facebook, site e contatos, até saber quem agendou e quem compareceu. O assistente de IA entra se vocês quiserem.</span></div>' +
+        '<div class="path"><span class="path-t">Proposta 1: site e landing pages</span>' +
+          '<span class="path-d">Site do Instituto, páginas do Dr. Felipe e da Dra. Brenda e landing pages para os anúncios, com contato pelo WhatsApp e pelo formulário.</span></div>' +
+        '<div class="path"><span class="path-t">Proposta 2: site, landing pages e painel</span>' +
+          '<span class="path-d">Tudo da proposta 1, mais um painel que mostra todo dia os números do Google Ads e do Meta Ads: investimento, cliques, contatos registrados, custo por contato e sinais de atenção. O painel só lê os dados.</span></div>' +
       '</div>' +
-      '<p class="bridge">Dá para começar pelo caminho 1 e somar o painel depois.</p>' +
+      '<p class="bridge">Dá para começar pela proposta 1 e somar o painel depois.</p>' +
       '<p class="small">São ' + TOTAL + ' perguntas e leva uns 3 minutos. A maioria é só tocar numa opção; dá para pular o que não souber e continuar depois neste aparelho.</p>';
     if (resumeStep) {
       var qi = STEPS[resumeStep].k === 'q' ? STEPS[resumeStep].i + 1 : TOTAL;
@@ -463,7 +468,7 @@
     var hp = document.getElementById('hp');
     var robo = !!(hp && hp.checked);
     var nome = answerText(Q[0]);
-    var cam = caminhoCurto();
+    var cam = propostaCurta();
     btn.disabled = true;
     btn.textContent = 'Enviando…';
     var envios = [];
@@ -476,7 +481,7 @@
       }, camposEmail()), function (j) { return j.success === true; }));
     }
     if (ENDPOINT) {
-      envios.push(post(ENDPOINT, { v: 1, nome: nome, caminho: cam, answers: state.a, text: texto(true), website: robo ? '1' : '' }, function (j) { return j.ok === true; }));
+      envios.push(post(ENDPOINT, { v: 1, nome: nome, proposta: cam, answers: state.a, text: texto(true), website: robo ? '1' : '' }, function (j) { return j.ok === true; }));
     }
     Promise.all(envios).then(function (res) {
       state.mode = res.some(Boolean) ? 'sent' : 'error';
