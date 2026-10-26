@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-tema="instituto">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -13,7 +13,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='9' fill='%23000'/%3E%3Cpath d='M12 16c0-4 2.5-6 5-6 1.6 0 2 1 3 1s1.4-1 3-1c2.5 0 5 2 5 6 0 2.5-1 4-1.6 5-.4 3-.6 8-1.9 9-1 .8-1.6-1-2-3.4-.3-2-1-3.6-2.5-3.6s-2.2 1.6-2.5 3.6c-.4 2.4-1 4.2-2 3.4-1.3-1-1.5-6-1.9-9-.6-1-1.6-2.5-1.6-5z' fill='%23F5F5F7'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Inter:wght@400;500;600;700&display=swap">
 <script type="importmap">
 {
   "imports": {
@@ -25,7 +25,8 @@
 </script>
 <style>
   /* Estilo Apple, a pedido do cliente: fonte do sistema (SF Pro no iPhone e no Mac, Inter nos outros),
-     listas agrupadas como nos Ajustes do iOS e o monitor do exame em preto, como as páginas de produto */
+     listas agrupadas como nos Ajustes do iOS e o monitor do exame em preto, como as páginas de produto.
+     Quando a Dra. Brenda responde, a página veste a marca dela: vinho, areia e a serifada itálica do Instagram. */
   :root {
     --fundo: #F2F2F7;
     --cartao: #FFFFFF;
@@ -34,22 +35,50 @@
     --linha: #C6C6C8;
     --borda: #86868B;
     --azul: #0071E3;
+    --azul-escuro: #0058B0;
     --azul-texto: #0066CC;
     --azul-claro: #E8F1FC;
     --verde: #34C759;
     --cinza-botao: #E5E5EA;
     --erro: #D70015;
     --erro-fundo: #FFF0F0;
+    --barra: rgba(242, 242, 247, .84);
+    --foco: rgba(0, 113, 227, .25);
+    --foco-anel: rgba(0, 113, 227, .5);
     --monitor: #000000;
+    --palco-centro: #1C1C1E;
     --hud: #F5F5F7;
     --hud-2: #86868B;
     --regua: #636366;
     --sf: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     --sf-titulo: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --serif-marca: "Cormorant Garamond", Georgia, "Times New Roman", serif;
     --r: 12px;
     --gutter-l: max(16px, env(safe-area-inset-left, 0px));
     --gutter-r: max(16px, env(safe-area-inset-right, 0px));
     color-scheme: light;
+  }
+  html[data-tema="brenda"] {
+    --fundo: #F3ECE5;
+    --cartao: #FFFDFB;
+    --texto: #17100C;
+    --texto-2: #6E5A4F;
+    --linha: #E4D6CA;
+    --borda: #9B8576;
+    --azul: #5C0819;
+    --azul-escuro: #3F0511;
+    --azul-texto: #5C0819;
+    --azul-claro: #F2E3E0;
+    --verde: #5C0819;
+    --cinza-botao: #E8DDD3;
+    --barra: rgba(243, 236, 229, .86);
+    --foco: rgba(92, 8, 25, .22);
+    --foco-anel: rgba(92, 8, 25, .45);
+    --monitor: #2A040C;
+    --palco-centro: #6B0F22;
+    --hud: #F3ECE5;
+    --hud-2: #D9C3B4;
+    --regua: #9C6A70;
   }
   * { box-sizing: border-box; }
   html, body { height: 100%; }
@@ -63,19 +92,21 @@
   body.digitando .tela { --palco-h: clamp(150px, 24svh, 230px); }
   .app { min-height: calc(100svh - var(--palco-h)); display: flex; flex-direction: column; max-width: 600px; margin: 0 auto; background: var(--fundo); overflow-x: clip; }
 
-  /* Monitor do exame com o dente em 3D (dente.js) */
-  .palco { position: relative; height: var(--palco-h); overflow: hidden; isolation: isolate; color: var(--hud); background: radial-gradient(70% 60% at 45% 48%, #1C1C1E 0%, var(--monitor) 72%); }
-  .palco-3d { position: absolute; inset: 0; opacity: 0; }
-  .palco-3d canvas { display: block; width: 100%; height: 100%; }
+  /* Monitor do exame: o dente (dente.js) para o Dr. Felipe, o mapeamento facial (rosto.js) para a Dra. Brenda */
+  .palco { position: relative; height: var(--palco-h); overflow: hidden; isolation: isolate; color: var(--hud); background: radial-gradient(70% 60% at 45% 48%, var(--palco-centro) 0%, var(--monitor) 72%); }
+  .palco-3d, .palco-rosto { position: absolute; inset: 0; opacity: 0; }
+  .palco-3d canvas, .palco-rosto canvas { display: block; width: 100%; height: 100%; }
   .palco.pronto .palco-3d { opacity: 1; }
+  .palco[data-mundo="rosto"] .palco-3d, .palco[data-mundo="rosto"] .palco-svg { opacity: 0; }
+  .palco[data-mundo="rosto"].rosto-pronto .palco-rosto { opacity: 1; }
   .palco-svg { position: absolute; left: 50%; top: 53%; height: 74%; transform: translate(-50%, -50%); color: var(--hud-2); opacity: .45; }
   .palco.pronto .palco-svg { opacity: 0; }
   .hud { position: absolute; left: var(--gutter-l); top: 16px; z-index: 2; display: grid; gap: 2px; max-width: 62%; pointer-events: none; }
   .hud-camada { margin: 0; font-family: var(--sf-titulo); font-size: 22px; font-weight: 600; line-height: 1.15; letter-spacing: -0.02em; color: var(--hud); }
   .hud-prof { margin: 0; font-size: 14px; color: var(--hud-2); font-variant-numeric: tabular-nums; }
-  .hud p, .regua-prop { text-shadow: 0 0 2px #000, 0 1px 10px #000; }
+  .hud p, .regua-prop { text-shadow: 0 0 2px var(--monitor), 0 1px 10px var(--monitor); }
 
-  /* Régua de profundidade, em milímetros do dente */
+  /* Régua: milímetros do dente ou terços do rosto */
   .regua { position: absolute; right: var(--gutter-r); top: 17%; bottom: 11%; width: 30px; z-index: 2; pointer-events: none; }
   .regua-escala { position: absolute; right: 0; top: 0; bottom: 0; width: 8px;
     background:
@@ -85,6 +116,12 @@
   .regua-trecho { position: absolute; right: 14px; width: 2px; border-radius: 1px; background: var(--hud-2); opacity: .7; }
   .regua-coroa { top: 0; height: calc(var(--coroa, 35%) - 3px); }
   .regua-raiz { top: calc(var(--coroa, 35%) + 3px); bottom: 0; }
+  .regua-t1, .regua-t2, .regua-t3 { display: none; }
+  .palco[data-mundo="rosto"] .regua-coroa, .palco[data-mundo="rosto"] .regua-raiz { display: none; }
+  .palco[data-mundo="rosto"] .regua-t1, .palco[data-mundo="rosto"] .regua-t2, .palco[data-mundo="rosto"] .regua-t3 { display: block; }
+  .regua-t1 { top: 0; height: calc(var(--t1, 33%) - 3px); }
+  .regua-t2 { top: calc(var(--t1, 33%) + 3px); height: calc(var(--t2, 66%) - var(--t1, 33%) - 6px); }
+  .regua-t3 { top: calc(var(--t2, 66%) + 3px); bottom: 0; }
   .regua-prop { position: absolute; right: 12px; top: 50%; width: max-content; max-width: 132px; margin: 0; transform: translateY(-50%); text-align: right; font-size: 12px; line-height: 1.35; color: var(--hud-2); opacity: 0; }
   .regua-prop b { display: block; font-size: 13px; font-weight: 600; color: var(--hud); }
   .palco[data-estado="welcome"] .regua-prop, .palco[data-estado="done"] .regua-prop { opacity: 1; }
@@ -92,13 +129,17 @@
   .palco[data-estado="q"] .regua-marcador { opacity: 1; }
   .palco-rotulos { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
   .rotulo { position: absolute; left: 0; top: 0; display: flex; align-items: center; gap: 6px; padding: 3px 10px 3px 4px; border-radius: 999px; background: rgba(28, 28, 30, .88); font-size: 12px; font-weight: 600; color: var(--hud); white-space: nowrap; opacity: 0; }
+  html[data-tema="brenda"] .rotulo { background: rgba(42, 4, 12, .86); }
   .rotulo::before { content: ""; flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--hud); }
   .rotulo.esq { flex-direction: row-reverse; padding: 3px 4px 3px 10px; }
   .palco[data-estado="review"] .rotulo { opacity: 1; }
+  .palco[data-mundo="rosto"] .rotulo:not(.rotulo-rosto), .palco:not([data-mundo="rosto"]) .rotulo-rosto { display: none; }
   .palco-flash { position: absolute; inset: 0; z-index: 3; background: #FFFFFF; opacity: 0; pointer-events: none; }
+  .palco.trocando .palco-flash { animation: troca .8s ease-out; }
+  @keyframes troca { 0% { opacity: 0; } 18% { opacity: .9; } 100% { opacity: 0; } }
 
   /* Barra de navegação translúcida, como no iOS */
-  .bar { position: sticky; top: 0; z-index: 5; background: rgba(242, 242, 247, .84); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); padding-top: env(safe-area-inset-top, 0px); }
+  .bar { position: sticky; top: 0; z-index: 5; background: var(--barra); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); padding-top: env(safe-area-inset-top, 0px); }
   .bar-row { display: grid; grid-template-columns: minmax(64px, 1fr) auto minmax(64px, 1fr); align-items: center; min-height: 52px; padding-left: var(--gutter-l); padding-right: var(--gutter-r); }
   .back { grid-column: 1; grid-row: 1; justify-self: start; width: 44px; height: 44px; margin-left: -12px; display: grid; place-items: center; border: 0; border-radius: 10px; background: transparent; color: var(--azul-texto); cursor: pointer; }
   .back svg { width: 26px; height: 26px; }
@@ -117,6 +158,10 @@
   @keyframes inBack { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: none; } }
   h1 { margin: 0; font-family: var(--sf-titulo); font-size: 28px; line-height: 1.14; font-weight: 700; letter-spacing: -0.02em; text-wrap: balance; outline: none; }
   h1.display { font-size: 34px; line-height: 1.1; letter-spacing: -0.025em; }
+  html[data-tema="brenda"] h1.display, html[data-tema="brenda"] .hud-camada, html[data-tema="brenda"] .rev-sec h2 { font-family: var(--serif-marca); font-style: italic; font-weight: 600; letter-spacing: 0; }
+  html[data-tema="brenda"] h1.display { font-size: 40px; line-height: 1.05; }
+  html[data-tema="brenda"] .hud-camada { font-size: 26px; }
+  html[data-tema="brenda"] .rev-sec h2 { font-size: 24px; }
   .hint { margin: -10px 0 0; font-size: 15px; line-height: 1.4; color: var(--texto-2); }
   .lead { margin: 0; font-size: 19px; line-height: 1.4; }
   .small { font-size: 15px; line-height: 1.4; color: var(--texto-2); }
@@ -145,6 +190,9 @@
   .opt.multi.on .ind::after { content: ""; width: 5px; height: 10px; margin-top: -2px; border: solid #FFFFFF; border-width: 0 2px 2px 0; transform: rotate(45deg); }
   .opt:active { background: var(--cinza-botao); }
   .opt.focus { outline: 3px solid var(--azul); outline-offset: -3px; }
+  .av { flex: none; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; color: #FFFFFF; font-size: 16px; font-weight: 600; letter-spacing: .02em; }
+  .av-felipe { background: #1D1D1F; font-family: var(--sf-titulo); }
+  .av-brenda { background: #5C0819; font-family: var(--serif-marca); font-style: italic; font-size: 21px; }
   .fluxo { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; font-size: 13px; line-height: 1.3; }
   .fluxo-l { color: var(--texto-2); }
   .fluxo-i { padding: 4px 10px; border-radius: 999px; background: var(--fundo); }
@@ -154,7 +202,7 @@
   /* Campos, no padrão dos formulários do site da Apple */
   .inp { width: 100%; min-height: 50px; padding: 13px 16px; background: var(--cartao); border: 1px solid var(--borda); border-radius: var(--r); color: var(--texto); font-size: 17px; }
   textarea.inp { min-height: 140px; resize: vertical; line-height: 1.45; }
-  .inp:focus { outline: none; border-color: var(--azul); box-shadow: 0 0 0 3px rgba(0, 113, 227, .25); }
+  .inp:focus { outline: none; border-color: var(--azul); box-shadow: 0 0 0 3px var(--foco); }
   .inp::placeholder { color: var(--texto-2); opacity: 1; }
 
   /* Revisão */
@@ -178,23 +226,24 @@
   .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 
   /* Rodapé translúcido com as ações */
-  .foot { position: sticky; bottom: 0; z-index: 5; display: flex; align-items: center; gap: 8px; background: rgba(242, 242, 247, .84); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); padding-top: 10px; padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); padding-left: var(--gutter-l); padding-right: var(--gutter-r); }
+  .foot { position: sticky; bottom: 0; z-index: 5; display: flex; align-items: center; gap: 8px; background: var(--barra); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); padding-top: 10px; padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); padding-left: var(--gutter-l); padding-right: var(--gutter-r); }
   .btn { min-height: 50px; padding: 12px 20px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: var(--r); font-size: 17px; font-weight: 600; text-align: center; text-decoration: none; cursor: pointer; }
   .btn-primary { flex: 1; background: var(--azul); color: #FFFFFF; }
-  .btn-primary:active { background: #0058B0; }
+  .btn-primary:active { background: var(--azul-escuro); }
   .btn-primary:disabled { background: var(--cinza-botao); color: #8E8E93; cursor: default; }
   .btn-secondary { background: var(--cartao); color: var(--azul-texto); }
   .btn-text { background: transparent; color: var(--azul-texto); padding-inline: 12px; font-weight: 400; }
-  .btn:focus-visible, .back:focus-visible, .edit:focus-visible { outline: 3px solid rgba(0, 113, 227, .5); outline-offset: 2px; }
+  .btn:focus-visible, .back:focus-visible, .edit:focus-visible { outline: 3px solid var(--foco-anel); outline-offset: 2px; }
 
   @media (prefers-reduced-motion: reduce) {
-    .step.in-fwd, .step.in-back { animation: none; }
+    .step.in-fwd, .step.in-back, .palco.trocando .palco-flash { animation: none; }
   }
   @media (prefers-reduced-motion: no-preference) {
-    .fill { transition: width .25s ease-out; }
+    body, .app, .bar, .foot, .opts, .rev, .btn-primary { transition: background-color .5s ease, color .5s ease; }
+    .fill { transition: width .25s ease-out, background-color .5s ease; }
     .opt { transition: background-color .15s ease-out; }
     .palco { transition: height .3s ease-out; }
-    .palco-3d { transition: opacity .6s ease-out; }
+    .palco-3d, .palco-rosto { transition: opacity .6s ease-out; }
     .palco-svg, .regua-prop, .rotulo { transition: opacity .4s ease-out; }
     .regua-marcador { transition: top 1.15s cubic-bezier(.65, 0, .35, 1), opacity .3s; }
   }
@@ -211,6 +260,7 @@
     .foot { padding-left: 32px; padding-right: 32px; }
     .hud { left: 40px; top: 36px; }
     .hud-camada { font-size: 32px; }
+    html[data-tema="brenda"] .hud-camada { font-size: 38px; }
     .hud-prof { font-size: 16px; }
     .regua { right: 40px; top: 15%; bottom: 13%; }
     .regua-prop { max-width: 190px; font-size: 13px; }
@@ -221,14 +271,18 @@
 </head>
 <body>
 <div class="tela">
-<section class="palco" id="palco" data-estado="welcome" aria-hidden="true">
+<section class="palco" id="palco" data-estado="welcome" data-mundo="dente" aria-hidden="true">
   <svg class="palco-svg" viewBox="0 0 120 180" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"><path d="M22 62C18 44 20 24 30 16C36 12 42 18 46 22C52 26 56 12 62 12C68 12 70 24 76 24C82 22 86 12 92 14C102 18 104 40 100 62C98 74 95 80 92 84C92 108 96 140 90 166C88 172 80 172 79 164C76 140 72 116 64 104C60 98 58 98 54 104C46 118 44 142 40 164C38 172 30 172 29 166C24 140 28 108 28 84C25 80 23 72 22 62Z"/></svg>
   <div class="palco-3d" id="palco-3d"></div>
+  <div class="palco-rosto" id="palco-rosto"></div>
   <div class="hud"><p class="hud-camada" id="hud-camada">Vista geral</p><p class="hud-prof" id="hud-prof">Molar inferior</p></div>
   <div class="regua" id="regua">
     <div class="regua-escala"></div>
     <div class="regua-trecho regua-coroa"><p class="regua-prop"><b>Coroa</b>Proposta 1: o que o paciente vê</p></div>
     <div class="regua-trecho regua-raiz"><p class="regua-prop"><b>Raiz</b>Proposta 2: soma o que fica por baixo</p></div>
+    <div class="regua-trecho regua-t1"></div>
+    <div class="regua-trecho regua-t2"></div>
+    <div class="regua-trecho regua-t3"></div>
     <div class="regua-marcador" id="regua-marcador"></div>
   </div>
   <div class="palco-rotulos" id="palco-rotulos"></div>
@@ -262,12 +316,17 @@
   var ENDPOINT = '';
   var WHATSAPP = ''; /* com DDI e DDD, só números (ex.: 5535999990000). Vazio: a pessoa escolhe o contato. */
 
-  /* O questionário substitui a reunião de início: cada resposta já alimenta uma decisão do projeto.
+  /* O questionário substitui a reunião de início. A primeira resposta diz quem está respondendo:
+     so mostra a pergunta só para essa pessoa e v troca textos e opções para ela.
      Opção com descrição: { t: título (é o que fica gravado), d: descrição, k: resumo para o assunto do e-mail,
-     fluxo: exemplo em dois passos }. Em pergunta de marcar, ex lista as opções que não combinam com as outras. */
+     fluxo: exemplo em dois passos, av: iniciais }. Em pergunta de marcar, ex lista as opções que não combinam com as outras. */
+  var FELIPE = 'Dr. Felipe Soares', BRENDA = 'Dra. Brenda Seda';
   var FORM = [
     { id: 'voce', t: 'Sobre você', qs: [
-      { id: 'nome', type: 'text', t: 'Qual é o seu nome?', hint: 'Se estiverem respondendo juntos, coloquem os dois nomes.', ph: 'Ex.: Felipe' }
+      { id: 'quem', type: 'radio', obrigatoria: true, t: 'Quem está respondendo?', hint: 'Cada um responde a sua parte, neste mesmo link.', o: [
+        { t: FELIPE, d: 'Implantes e casos complexos', av: 'FS' },
+        { t: BRENDA, d: 'Harmonização facial', av: 'BS' }
+      ]}
     ]},
     { id: 'proposta', t: 'A proposta', qs: [
       { id: 'proposta', type: 'radio', t: 'Qual proposta faz mais sentido agora?', o: [
@@ -277,89 +336,98 @@
       ]}
     ]},
     { id: 'objetivo', t: 'Objetivo', qs: [
-      { id: 'objetivo', type: 'radio', t: 'Qual é o objetivo principal deste projeto?', o: ['Atrair mais pacientes novos', 'Atrair casos mais complexos, de maior valor', 'Depender menos de indicação', 'Filtrar quem só procura preço', 'Ser encontrado por pacientes de outras cidades', 'Construir a marca do Instituto'] },
-      { id: 'sucesso', type: 'area', t: 'Daqui a seis meses, o que precisa ter acontecido para vocês dizerem que valeu a pena?', ph: 'Ex.: receber 20 pacientes novos por mês para implante, boa parte vindo do Google' },
-      { id: 'meta', type: 'radio', t: 'Quantos pacientes novos por mês vocês querem receber, somando os dois?', o: ['Até 10', '11 a 30', '31 a 60', 'Mais de 60', 'Não sei'] },
+      { id: 'objetivo', type: 'radio', t: 'Qual é o seu objetivo principal com este projeto?', o: ['Atrair mais pacientes novos', 'Atrair tratamentos de maior valor', 'Depender menos de indicação', 'Filtrar quem só procura preço', 'Ser encontrado por pacientes de outras cidades', 'Fortalecer a minha marca', 'Construir a marca do Instituto'] },
+      { id: 'sucesso', type: 'area', t: 'Daqui a seis meses, o que precisa ter acontecido para você dizer que valeu a pena?', ph: 'Ex.: receber 20 pacientes novos por mês para implante, boa parte vindo do Google',
+        v: { brenda: { ph: 'Ex.: agenda cheia de planejamento facial, com pacientes que chegam pelo Instagram e pelo Google' } } },
+      { id: 'meta', type: 'radio', t: 'Quantos pacientes novos por mês você quer receber?', o: ['Até 10', '11 a 30', '31 a 60', 'Mais de 60', 'Não sei'] },
       { id: 'hoje', type: 'radio', t: 'E quantos pacientes novos chegam hoje, por mês?', o: ['Até 10', '11 a 30', '31 a 60', 'Mais de 60', 'Não sei'] },
-      { id: 'origem', type: 'check', t: 'Como os pacientes chegam hoje?', o: ['Indicação de pacientes', 'Indicação de outros dentistas', 'Instagram', 'Google (busca ou Maps)', 'Anúncios pagos', 'Doctoralia ou outro site de agendamento', 'Convênio', 'Outro jeito'] },
-      { id: 'ideal', type: 'area', t: 'Quem é o paciente que cada um mais quer atender?', hint: 'Idade, situação, o que a pessoa procura e de onde ela vem.', ph: 'Ex.: Dr. Felipe, quem usa dentadura e quer dentes fixos; Dra. Brenda, quem quer um resultado natural' },
-      { id: 'prazo', type: 'radio', t: 'Para quando vocês querem o site no ar?', o: ['O quanto antes', 'Em até 1 mês', 'Em 2 a 3 meses', 'Sem data definida'] },
-      { id: 'verba', type: 'radio', t: 'Quanto pretendem investir por mês em anúncios, somando tudo?', o: ['Até R$ 1.500', 'De R$ 1.500 a R$ 3.000', 'De R$ 3.000 a R$ 6.000', 'Mais de R$ 6.000', 'Ainda não sabemos'] }
+      { id: 'origem', type: 'check', t: 'Como os seus pacientes chegam hoje?', o: ['Indicação de pacientes', 'Indicação de outros dentistas', 'Instagram', 'Google (busca ou Maps)', 'Anúncios pagos', 'Doctoralia ou outro site de agendamento', 'Convênio', 'Outro jeito'] },
+      { id: 'ideal', type: 'area', t: 'Quem é o paciente que você mais quer atender?', hint: 'Idade, situação, o que a pessoa procura e de onde ela vem.', ph: 'Ex.: quem usa dentadura e quer dentes fixos',
+        v: { brenda: { ph: 'Ex.: quem quer um resultado natural, sem parecer que fez alguma coisa' } } },
+      { id: 'prazo', type: 'radio', t: 'Para quando você quer o site no ar?', o: ['O quanto antes', 'Em até 1 mês', 'Em 2 a 3 meses', 'Sem data definida'] },
+      { id: 'verba', type: 'radio', t: 'Quanto pretende investir por mês em anúncios dos seus tratamentos?', o: ['Até R$ 1.500', 'De R$ 1.500 a R$ 3.000', 'De R$ 3.000 a R$ 6.000', 'Mais de R$ 6.000', 'Ainda não sei'] }
     ]},
     { id: 'tratamentos', t: 'Tratamentos', qs: [
-      { id: 'trat_felipe', type: 'check', t: 'Quais tratamentos o Dr. Felipe quer divulgar?', hint: 'A lista parte do perfil dele no Google. Marquem tudo o que ele faz e quer mostrar.', o: ['Implante dentário', 'Protocolo fixo sobre implantes (arcada inteira)', 'Implante zigomático', 'Reconstrução de maxila atrófica', 'Enxerto e regeneração óssea', 'Prótese sobre implante', 'Planejamento cirúrgico e protético', 'Clínica geral'] },
-      { id: 'trat_brenda', type: 'check', t: 'Quais tratamentos a Dra. Brenda quer divulgar?', hint: 'A lista é só um ponto de partida. Marquem o que ela faz e quer mostrar.', o: ['Planejamento facial completo (BS Method)', 'Toxina botulínica', 'Preenchimento com ácido hialurônico', 'Preenchimento labial', 'Bioestimulador de colágeno', 'Fios de sustentação', 'Skinbooster', 'Rinomodelação', 'Tratamento de papada'] },
-      { id: 'trat_outros', type: 'area', t: 'Falta algum tratamento nessas listas?', ph: 'Escrevam o nome e quem faz' },
-      { id: 'lps', type: 'radio', t: 'Como vocês preferem as landing pages?', hint: 'Landing page é a página para onde vai quem clica num anúncio.', o: [
+      { id: 'trat_felipe', so: 'felipe', type: 'check', t: 'Quais tratamentos você quer divulgar?', hint: 'A lista parte do seu perfil no Google. Marque tudo o que você faz e quer mostrar.', o: ['Implante dentário', 'Protocolo fixo sobre implantes (arcada inteira)', 'Implante zigomático', 'Reconstrução de maxila atrófica', 'Enxerto e regeneração óssea', 'Prótese sobre implante', 'Planejamento cirúrgico e protético', 'Clínica geral'] },
+      { id: 'trat_brenda', so: 'brenda', type: 'check', t: 'Quais tratamentos você quer divulgar?', hint: 'A lista é só um ponto de partida. Marque tudo o que você faz e quer mostrar.', o: ['Planejamento facial completo (BS Method)', 'Toxina botulínica', 'Preenchimento com ácido hialurônico', 'Preenchimento labial', 'Bioestimulador de colágeno', 'Fios de sustentação', 'Skinbooster', 'Rinomodelação', 'Tratamento de papada'] },
+      { id: 'trat_outros', type: 'area', t: 'Falta algum tratamento nessa lista?', ph: 'Escreva o nome de cada um' },
+      { id: 'especialidade', type: 'text', t: 'Quais especialidades você tem registradas no CFO?', hint: 'Por regra do CFO, só especialidade registrada pode aparecer como "especialista".', ph: 'Ex.: Implantodontia, ou "nenhuma registrada"',
+        v: { brenda: { ph: 'Ex.: Harmonização Orofacial, ou "nenhuma registrada"' } } },
+      { id: 'lps', type: 'radio', t: 'Como você prefere as landing pages?', hint: 'Landing page é a página para onde vai quem clica num anúncio.', o: [
         { t: 'Uma por procedimento', d: 'Cada procedimento tem a sua página. O anúncio e a página falam exatamente da mesma coisa, mas são mais páginas para escrever e revisar.', fluxo: ['Anúncio de implante zigomático', 'Página só de implante zigomático'] },
-        { t: 'Uma para cada profissional', d: 'Uma página do Dr. Felipe e uma da Dra. Brenda, cada uma com todos os tratamentos em seções. Mais simples de manter.', fluxo: ['Anúncio de implante zigomático', 'Página do Dr. Felipe, na seção de zigomático'] },
+        { t: 'Uma para cada profissional', d: 'Uma página sua e uma da Dra. Brenda, cada uma com todos os tratamentos em seções. Mais simples de manter.', fluxo: ['Anúncio de implante zigomático', 'Página do Dr. Felipe, na seção de zigomático'] },
         { t: 'Começar com uma por profissional', d: 'Começa com as duas páginas. O procedimento que mais trouxer pacientes ganha página própria depois.', fluxo: ['As duas páginas no começo', 'Zigomático ganha página própria quando valer a pena'] },
         { t: 'Não sei, prefiro a sugestão de vocês', d: '' }
-      ]}
+      ], v: { brenda: { o: [
+        { t: 'Uma por procedimento', d: 'Cada procedimento tem a sua página. O anúncio e a página falam exatamente da mesma coisa, mas são mais páginas para escrever e revisar.', fluxo: ['Anúncio de preenchimento labial', 'Página só de preenchimento labial'] },
+        { t: 'Uma para cada profissional', d: 'Uma página sua e uma do Dr. Felipe, cada uma com todos os tratamentos em seções. Mais simples de manter.', fluxo: ['Anúncio de preenchimento labial', 'Página da Dra. Brenda, na seção de lábios'] },
+        { t: 'Começar com uma por profissional', d: 'Começa com as duas páginas. O procedimento que mais trouxer pacientes ganha página própria depois.', fluxo: ['As duas páginas no começo', 'Lábios ganha página própria quando valer a pena'] },
+        { t: 'Não sei, prefiro a sugestão de vocês', d: '' }
+      ] } } }
     ]},
-    { id: 'onde', t: 'Onde vocês atendem', qs: [
-      { id: 'locais', type: 'area', t: 'Onde ficam os consultórios?', hint: 'Se atendem em mais de um lugar, coloquem todos.', ph: 'Endereço, bairro e cidade de cada um' },
-      { id: 'regiao', type: 'area', t: 'De quais cidades e bairros vocês querem atrair pacientes?', ph: 'Ex.: a cidade toda e as cidades vizinhas' },
-      { id: 'viajam', type: 'radio', t: 'Pacientes de outras cidades viajam para tratar com vocês?', o: ['Sim, com frequência', 'Às vezes', 'Quase nunca', 'Não sei'] }
+    { id: 'onde', t: 'Onde você atende', qs: [
+      { id: 'locais', type: 'area', t: 'Onde você atende?', hint: 'Se atende em mais de um lugar, coloque todos.', ph: 'Endereço, bairro e cidade de cada lugar' },
+      { id: 'regiao', type: 'area', t: 'De quais cidades e bairros você quer atrair pacientes?', ph: 'Ex.: a cidade toda e as cidades vizinhas' },
+      { id: 'viajam', type: 'radio', t: 'Pacientes de outras cidades viajam para tratar com você?', o: ['Sim, com frequência', 'Às vezes', 'Quase nunca', 'Não sei'] }
     ]},
     { id: 'anuncios', t: 'Anúncios', qs: [
-      { id: 'anuncia', type: 'check', t: 'Onde vocês anunciam hoje?', o: ['Google (busca e Maps)', 'YouTube, inclusive Shorts', 'Instagram', 'Facebook', 'TikTok', 'Doctoralia ou outro site de agendamento', 'Influenciadores ou parcerias', 'Rádio, revista ou outdoor', 'Ainda não anunciamos', 'Não pretendemos anunciar'], ex: ['Ainda não anunciamos', 'Não pretendemos anunciar'] },
-      { id: 'quer', type: 'check', t: 'Onde querem anunciar daqui para frente?', hint: 'O painel da proposta 2 lê o Google Ads, que inclui o YouTube, e o Meta Ads, que inclui Instagram e Facebook. TikTok e Kwai ficariam fora dele.', o: ['Google (busca e Maps)', 'YouTube, inclusive Shorts', 'Instagram', 'Facebook', 'TikTok', 'Kwai', 'Ainda não sabemos'], ex: ['Ainda não sabemos'] },
-      { id: 'gestor', type: 'radio', t: 'Quem cuida dos anúncios?', o: ['Nós mesmos', 'Uma agência ou um gestor de tráfego', 'Ninguém ainda'] }
+      { id: 'anuncia', type: 'check', t: 'Onde você anuncia hoje?', o: ['Google (busca e Maps)', 'YouTube, inclusive Shorts', 'Instagram', 'Facebook', 'TikTok', 'Doctoralia ou outro site de agendamento', 'Influenciadores ou parcerias', 'Rádio, revista ou outdoor', 'Ainda não anuncio', 'Não pretendo anunciar'], ex: ['Ainda não anuncio', 'Não pretendo anunciar'] },
+      { id: 'quer', type: 'check', t: 'Onde quer anunciar daqui para frente?', hint: 'O painel da proposta 2 lê o Google Ads, que inclui o YouTube, e o Meta Ads, que inclui Instagram e Facebook. TikTok e Kwai ficariam fora dele.', o: ['Google (busca e Maps)', 'YouTube, inclusive Shorts', 'Instagram', 'Facebook', 'TikTok', 'Kwai', 'Ainda não sei'], ex: ['Ainda não sei'] },
+      { id: 'gestor', type: 'radio', t: 'Quem cuida dos seus anúncios?', o: ['Eu mesmo', 'Uma agência ou um gestor de tráfego', 'Ninguém ainda'],
+        v: { brenda: { o: ['Eu mesma', 'Uma agência ou um gestor de tráfego', 'Ninguém ainda'] } } }
     ]},
     { id: 'contato', t: 'Contato com o paciente', qs: [
-      { id: 'canais', type: 'check', t: 'Como o paciente deve chamar vocês pelo site?', o: ['WhatsApp', 'Formulário', 'Telefone', 'Agendamento online', 'Direct do Instagram'] },
-      { id: 'whatsapp', type: 'text', t: 'Qual número de WhatsApp vai receber os contatos?', ph: '(DDD) número', im: 'tel' },
-      { id: 'horario', type: 'text', t: 'Qual é o horário de atendimento?', ph: 'Ex.: segunda a sexta, das 8h às 18h' },
-      { id: 'atende', type: 'radio', t: 'Quem vai responder quem chamar pelo site?', o: ['Eu respondo', 'Alguém da recepção', 'Cada profissional responde os seus', 'Ainda não definimos'] },
-      { id: 'tempo', type: 'radio', t: 'Em quanto tempo vocês conseguem responder um contato?', o: ['Na hora, no horário de atendimento', 'Em até 1 hora', 'No mesmo dia', 'No dia seguinte'] }
+      { id: 'canais', type: 'check', t: 'Como o paciente deve chamar você pelo site?', o: ['WhatsApp', 'Formulário', 'Telefone', 'Agendamento online', 'Direct do Instagram'] },
+      { id: 'whatsapp', type: 'text', t: 'Qual número de WhatsApp vai receber os seus contatos?', ph: '(DDD) número', im: 'tel' },
+      { id: 'horario', type: 'text', t: 'Em quais dias e horários você atende?', ph: 'Ex.: terças e quintas, das 9h às 18h' },
+      { id: 'atende', type: 'radio', t: 'Quem vai responder quem chamar você pelo site?', o: ['Eu mesmo', 'Alguém da recepção', 'Ainda não definimos'],
+        v: { brenda: { o: ['Eu mesma', 'Alguém da recepção', 'Ainda não definimos'] } } },
+      { id: 'tempo', type: 'radio', t: 'Em quanto tempo dá para responder um contato?', o: ['Na hora, no horário de atendimento', 'Em até 1 hora', 'No mesmo dia', 'No dia seguinte'] }
     ]},
     { id: 'marca', t: 'Marca e site', qs: [
-      { id: 'nome_inst', type: 'text', t: 'Qual vai ser o nome do Instituto?', hint: 'Se ainda não decidiram, escrevam as opções que estão pensando.', ph: 'Nome ou opções' },
-      { id: 'marca', type: 'radio', t: 'Como o Instituto e a marca de cada um devem aparecer?', o: [
+      { id: 'nome_inst', type: 'text', t: 'Qual vai ser o nome do Instituto?', hint: 'Se ainda não decidiram, escreva as opções que vocês estão pensando.', ph: 'Nome ou opções' },
+      { id: 'marca', type: 'radio', t: 'Como o Instituto e a marca de cada profissional devem aparecer?', o: [
         { t: 'O Instituto em primeiro plano', d: 'O site fala do Instituto, e os dois profissionais aparecem dentro dele.' },
         { t: 'Cada profissional em primeiro plano', d: 'Cada um com a sua marca; o Instituto é o lugar que une os dois.' },
         { t: 'Equilibrado', d: 'O Instituto tem a marca dele, e a página de cada um mantém a identidade própria.' },
         { t: 'Não sei, prefiro a sugestão de vocês', d: '' }
       ]},
-      { id: 'marca_brenda', type: 'radio', t: 'Na página da Dra. Brenda, a identidade dela continua?', hint: 'Hoje ela usa o vinho e o monograma BS no Instagram.', o: ['Sim, igual ao Instagram', 'Sim, adaptada ao Instituto', 'Não, tudo no padrão do Instituto', 'Ela decide depois'] },
-      { id: 'dominio', type: 'text', t: 'Vocês já têm um endereço de site (domínio)?', ph: 'Ex.: www.nomedoinstituto.com.br, ou "não temos"' },
+      { id: 'marca_brenda', so: 'brenda', type: 'radio', t: 'Na sua página, a sua identidade continua?', hint: 'Hoje você usa o vinho e o monograma BS no Instagram.', o: ['Sim, igual ao Instagram', 'Sim, adaptada ao Instituto', 'Não, tudo no padrão do Instituto'] },
+      { id: 'site_proprio', so: 'brenda', type: 'radio', t: 'Você já tem site ou domínio próprio?', o: ['Sim', 'Não', 'Não sei'] },
+      { id: 'dominio_comprado', type: 'radio', t: 'O domínio do Instituto já foi comprado?', hint: 'As landing pages ficam dentro dele, como nomedoinstituto.com.br/implante-zigomatico. Não precisa comprar outro domínio.', o: ['Sim', 'Ainda não', 'Não sei'],
+        v: { brenda: { hint: 'As landing pages ficam dentro dele, como nomedoinstituto.com.br/preenchimento-labial. Não precisa comprar outro domínio.' } } },
+      { id: 'dominio', type: 'text', t: 'Qual é o domínio, ou que nomes vocês estão pensando?', ph: 'Ex.: www.nomedoinstituto.com.br' },
+      { id: 'dominio_onde', type: 'radio', t: 'Onde o domínio está registrado?', o: ['Registro.br', 'GoDaddy', 'Hostinger', 'Outro lugar', 'Ainda não foi registrado', 'Não sei'] },
+      { id: 'dominio_quem', type: 'radio', t: 'Quem gerencia o domínio e tem a senha de acesso?', o: ['Dr. Felipe', 'Dra. Brenda', 'Alguém da equipe', 'Uma agência ou um técnico', 'Ninguém ainda', 'Não sei'] },
       { id: 'logo', type: 'radio', t: 'O Instituto já tem logotipo?', o: ['Sim, pronto', 'Temos um rascunho', 'Não, precisa ser criado'] },
-      { id: 'impressao', type: 'check', t: 'Que impressão o site deve passar?', hint: 'Marquem até três.', o: ['Sofisticado', 'Acolhedor', 'Técnico e preciso', 'Moderno', 'Discreto', 'Exclusivo', 'Próximo e simples'] },
-      { id: 'fotos', type: 'radio', t: 'Vocês têm fotos profissionais de vocês e do consultório?', o: ['Sim, recentes', 'Algumas, mas antigas', 'Não, precisamos fazer'] },
-      { id: 'referencias', type: 'area', t: 'Tem algum site de que vocês gostam, de qualquer área?', ph: 'Colem o link e digam o que gostaram' }
+      { id: 'impressao', type: 'check', t: 'Que impressão o site deve passar?', hint: 'Marque até três.', o: ['Sofisticado', 'Acolhedor', 'Técnico e preciso', 'Moderno', 'Discreto', 'Exclusivo', 'Próximo e simples'] },
+      { id: 'fotos', type: 'radio', t: 'Você tem fotos profissionais suas e do consultório?', o: ['Sim, recentes', 'Algumas, mas antigas', 'Não, preciso fazer'] },
+      { id: 'referencias', type: 'area', t: 'Tem algum site de que você gosta, de qualquer área?', ph: 'Cole o link e diga o que gostou' }
     ]},
     { id: 'regras', t: 'Regras e responsáveis', qs: [
       { id: 'cnpj', type: 'radio', t: 'O Instituto é uma empresa (CNPJ) registrada no CRO?', hint: 'O número de inscrição da empresa e o responsável técnico precisam aparecer no site.', o: ['Sim', 'Está em andamento', 'Ainda não', 'Não sei'] },
       { id: 'rt', type: 'radio', t: 'Quem é ou será o responsável técnico do Instituto?', o: ['Dr. Felipe', 'Dra. Brenda', 'Outra pessoa', 'Ainda não definimos'] },
       { id: 'titular', type: 'radio', t: 'Em nome de quem ficam o domínio, as contas de anúncio e o WhatsApp?', hint: 'A sugestão é que fiquem em nome de vocês, nunca do fornecedor. A gente recebe um acesso que vocês podem retirar quando quiserem.', o: ['Do Instituto (CNPJ)', 'De cada profissional', 'Ainda não sabemos'] },
       { id: 'aprova', type: 'radio', t: 'Quem aprova os textos e as imagens antes de publicar?', o: ['Cada um aprova a sua parte', 'Os dois aprovam tudo', 'Uma pessoa centraliza'] },
-      { id: 'depoimentos', type: 'radio', t: 'Vocês têm depoimentos de pacientes com autorização por escrito?', hint: 'Fotos de antes e depois não entram no site do Instituto, por regra do CFO.', o: ['Sim', 'Temos, mas sem autorização por escrito', 'Não temos'] }
+      { id: 'depoimentos', type: 'radio', t: 'Você tem depoimentos de pacientes com autorização por escrito?', hint: 'Fotos de antes e depois não entram no site do Instituto, por regra do CFO.', o: ['Sim', 'Tenho, mas sem autorização por escrito', 'Não tenho'] }
     ]},
     { id: 'painel', t: 'Painel', qs: [
       { id: 'painel_quem', type: 'check', t: 'Se escolherem o painel, quem vai acompanhar os números?', hint: 'Se não escolheram o painel, é só pular.', o: ['Dr. Felipe', 'Dra. Brenda', 'Gestor de tráfego ou agência', 'Alguém da recepção', 'Outra pessoa'] },
-      { id: 'contas', type: 'radio', t: 'Os anúncios de cada um ficam em contas separadas?', hint: 'Isso define como o painel separa os números de cada um.', o: ['Sim, cada um tem a sua', 'Tudo numa conta só', 'Ainda não temos conta de anúncio', 'Não sei'] }
+      { id: 'contas', type: 'radio', t: 'Os seus anúncios ficam numa conta separada da do outro profissional?', hint: 'Isso define como o painel separa os números de cada um.', o: ['Sim, tenho a minha', 'Tudo numa conta só', 'Ainda não tenho conta de anúncio', 'Não sei'] }
     ]},
     { id: 'fim', t: 'Para terminar', qs: [
       { id: 'obs', type: 'area', t: 'Tem algo que a gente precisa saber e não perguntou?' }
     ]}
   ];
 
-  var Q = [];
-  FORM.forEach(function (s, si) { s.qs.forEach(function (q) { q.sec = s; q.si = si; Q.push(q); }); });
-  var TOTAL = Q.length;
-  var STEPS = [{ k: 'welcome' }];
-  Q.forEach(function (q, i) { STEPS.push({ k: 'q', q: q, i: i }); });
-  STEPS.push({ k: 'review' });
-  STEPS.push({ k: 'done' });
-  var FIRST_Q = 1, REVIEW = STEPS.length - 2, DONE = STEPS.length - 1;
-
-  var KEY = 'proposta-instituto-v3';
+  var KEY = 'proposta-instituto-v4';
   var state = { step: 0, a: {}, mode: '' }; /* mode no final: sent | whatsapp | error */
+  var Q = [], STEPS = [], TOTAL = 0, FIRST_Q = 1, REVIEW = 0, DONE = 0;
   var fromReview = false;
   var resumeStep = 0;
   var clearArmed = false;
   var autoTimer = null;
+  var carregandoRosto = false;
 
   var main = document.getElementById('main');
   var foot = document.getElementById('foot');
@@ -370,6 +438,35 @@
   var barCount = document.getElementById('bar-count');
   var fill = document.getElementById('fill');
   var palco = document.getElementById('palco');
+  var corTema = document.querySelector('meta[name="theme-color"]');
+
+  function pessoa() {
+    return state.a.quem === BRENDA ? 'brenda' : state.a.quem === FELIPE ? 'felipe' : '';
+  }
+  /* Monta a lista de perguntas de quem está respondendo; antes da escolha, vale o caminho do Dr. Felipe */
+  function perguntasDe(p) {
+    var lista = [];
+    FORM.forEach(function (s, si) {
+      s.qs.forEach(function (q0) {
+        if (q0.so && q0.so !== (p || 'felipe')) return;
+        var q = Object.assign({}, q0, (q0.v && q0.v[p]) || {});
+        q.sec = s;
+        q.si = si;
+        lista.push(q);
+      });
+    });
+    return lista;
+  }
+  function montar() {
+    Q = perguntasDe(pessoa());
+    TOTAL = Q.length;
+    STEPS = [{ k: 'welcome' }];
+    Q.forEach(function (q, i) { STEPS.push({ k: 'q', q: q, i: i }); });
+    STEPS.push({ k: 'review' });
+    STEPS.push({ k: 'done' });
+    REVIEW = STEPS.length - 2;
+    DONE = STEPS.length - 1;
+  }
 
   function esc(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -381,8 +478,10 @@
   function load() {
     try {
       var s = JSON.parse(localStorage.getItem(KEY) || 'null');
-      if (s && typeof s === 'object' && s.a) { state.a = s.a; state.step = Math.min(Math.max(0, s.step | 0), DONE); state.mode = s.mode || ''; }
+      if (s && typeof s === 'object' && s.a) { state.a = s.a; state.step = Math.max(0, s.step | 0); state.mode = s.mode || ''; }
     } catch (e) {}
+    montar();
+    state.step = Math.min(state.step, DONE);
     if (state.step === DONE && !state.mode) state.step = REVIEW;
   }
 
@@ -410,8 +509,10 @@
     var b = plain ? '' : '*';
     var L = [b + 'Proposta do Instituto: respostas' + b, 'Respondido em ' + new Date().toLocaleDateString('pt-BR'), ''];
     FORM.forEach(function (s, si) {
+      var qs = Q.filter(function (q) { return q.sec === s; });
+      if (!qs.length) return;
       L.push(b + (si + 1) + '. ' + s.t + b);
-      s.qs.forEach(function (q) { L.push('• ' + q.t + '\n   ' + (answerText(q) || '—')); });
+      qs.forEach(function (q) { L.push('• ' + q.t + '\n   ' + (answerText(q) || '—')); });
       L.push('');
     });
     return L.join('\n').trim();
@@ -432,14 +533,17 @@
       '<div><b>' + titulo + '</b><span>' + texto + '</span></div></li>';
   }
   function htmlWelcome() {
+    var p = pessoa();
+    var maior = Math.max(perguntasDe('felipe').length, perguntasDe('brenda').length);
     var h = '<div class="step">' +
       '<h1 class="display" tabindex="-1">Qual proposta faz sentido para vocês?</h1>' +
-      '<p class="lead">Depois de ver o vídeo, responda por aqui. As respostas vão direto para o Gabriel.</p>' +
+      '<p class="lead">Depois de ver o vídeo, responda por aqui. Cada um responde a sua parte, e as respostas vão direto para o Gabriel.</p>' +
       '<ul class="destaques">' +
         destaque('site', 'Proposta 1: site e landing pages', 'Site do Instituto, páginas do Dr.&nbsp;Felipe e da Dra.&nbsp;Brenda e landing pages para os anúncios, com contato pelo WhatsApp e pelo formulário.') +
         destaque('painel', 'Proposta 2: site, landing pages e painel', 'Tudo da proposta 1, mais um painel que mostra todo dia os números do Google Ads e do Meta Ads. O painel só lê os dados.') +
-        destaque('tempo', 'Uns 12 minutos, sem reunião', 'São ' + TOTAL + ' perguntas, quase todas de tocar numa opção. Com elas o projeto já começa.') +
-        destaque('corte', 'Um corte a cada resposta', 'O exame do dente acompanha o questionário, do esmalte ao ápice.') +
+        destaque('tempo', 'Uns 12 minutos, sem reunião', 'Cerca de ' + maior + ' perguntas, quase todas de tocar numa opção. Com elas o projeto já começa.') +
+        destaque('corte', p === 'brenda' ? 'Uma camada a cada resposta' : 'Um corte a cada resposta',
+          p === 'brenda' ? 'O planejamento facial acompanha o questionário, camada por camada.' : 'O exame acompanha o questionário: o dente para o Dr.&nbsp;Felipe e o planejamento facial para a Dra.&nbsp;Brenda.') +
       '</ul>' +
       '<p class="small">Dá para começar pela proposta 1 e somar o painel depois. Se precisar parar, as respostas ficam guardadas neste aparelho.</p>';
     if (resumeStep) {
@@ -457,7 +561,7 @@
   function htmlQuestion(q) {
     var h = '<div class="step"><h1 id="qh" tabindex="-1">' + esc(q.t) + '</h1>';
     if (q.hint) h += '<p class="hint">' + esc(q.hint) + '</p>';
-    else if (q.type === 'check') h += '<p class="hint">Marquem quantas quiserem.</p>';
+    else if (q.type === 'check') h += '<p class="hint">Marque quantas quiser.</p>';
     var a = state.a[q.id];
     if (q.type === 'radio' || q.type === 'check') {
       var multi = q.type === 'check';
@@ -468,6 +572,7 @@
         var on = sel.indexOf(t) !== -1;
         h += '<label class="opt' + (multi ? ' multi' : '') + (on ? ' on' : '') + '">' +
           '<input type="' + (multi ? 'checkbox' : 'radio') + '" name="q" value="' + esc(t) + '"' + (on ? ' checked' : '') + '>' +
+          (o.av ? '<span class="av av-' + (o.av === 'BS' ? 'brenda' : 'felipe') + '" aria-hidden="true">' + esc(o.av) + '</span>' : '') +
           '<span class="ind" aria-hidden="true"></span><span class="opt-txt"><span class="opt-t">' + esc(t) + '</span>' +
           (o.d ? '<span class="opt-d">' + esc(o.d) + '</span>' : '') +
           (o.fluxo ? htmlFluxo(o.fluxo) : '') + '</span></label>';
@@ -483,8 +588,10 @@
   function htmlReview() {
     var h = '<div class="step"><h1 tabindex="-1">Confira antes de enviar</h1><p class="hint">Toque em Alterar para mudar uma resposta.</p>';
     FORM.forEach(function (s) {
+      var qs = Q.filter(function (q) { return q.sec === s; });
+      if (!qs.length) return;
       h += '<section class="rev-sec"><h2>' + esc(s.t) + '</h2><div class="rev">';
-      s.qs.forEach(function (q) {
+      qs.forEach(function (q) {
         var t = answerText(q);
         h += '<div class="rev-row"><span class="rev-q">' + esc(q.t) + '</span>' +
           '<span class="rev-a' + (t ? '' : ' empty') + '">' + (t ? esc(t) : 'Sem resposta') + '</span>' +
@@ -552,7 +659,7 @@
       }
     } else if (st.k === 'q') {
       var ok = answered(st.q);
-      h = '<button type="button" class="btn btn-text" id="skip">Pular</button>' +
+      h = (st.q.obrigatoria ? '' : '<button type="button" class="btn btn-text" id="skip">Pular</button>') +
           '<button type="button" class="btn btn-primary" id="next"' + (ok ? '' : ' disabled') + '>' + (fromReview ? 'Voltar para a revisão' : 'Continuar') + '</button>';
     } else if (st.k === 'review') {
       h = '<button type="button" class="btn btn-primary" id="send">Enviar respostas</button>';
@@ -563,15 +670,36 @@
     foot.innerHTML = h;
     foot.hidden = !h;
   }
-  /* Conta para o dente 3D (dente.js) em que passo estamos; se o 3D não carregar, nada muda aqui */
-  function avisarDente() {
+
+  /* Tema e palco de quem responde: Apple e o dente para o Dr. Felipe, a marca e o rosto para a Dra. Brenda */
+  function aplicarTema() {
+    var p = pessoa();
+    document.documentElement.setAttribute('data-tema', p || 'instituto');
+    if (corTema) corTema.setAttribute('content', p === 'brenda' ? '#2A040C' : '#000000');
+    var mundo = p === 'brenda' ? 'rosto' : 'dente';
+    var mudou = palco.getAttribute('data-mundo') !== mundo;
+    palco.setAttribute('data-mundo', mundo);
+    if (mundo === 'rosto' && !window.rosto && !carregandoRosto) {
+      carregandoRosto = true;
+      import('./rosto.js').catch(function () {});
+    }
+    return mudou;
+  }
+  function avisarPalco() {
     var st = STEPS[state.step];
     var e = st.k === 'q' ? { k: 'q', i: st.i, total: TOTAL } : { k: st.k, total: TOTAL };
     palco.setAttribute('data-estado', st.k);
     document.body.classList.toggle('digitando', st.k === 'q' && (st.q.type === 'text' || st.q.type === 'area'));
+    var mudou = aplicarTema();
     window.__denteEstado = e;
-    if (window.dente && typeof window.dente.ir === 'function') {
-      try { window.dente.ir(e); } catch (err) {}
+    var mundo = palco.getAttribute('data-mundo') === 'rosto' ? window.rosto : window.dente;
+    if (mundo) {
+      try { if (mudou && mundo.ativar) mundo.ativar(e); else mundo.ir(e); } catch (err) {}
+    }
+    if (mudou) {
+      palco.classList.remove('trocando');
+      void palco.offsetWidth;
+      palco.classList.add('trocando');
     }
   }
 
@@ -585,7 +713,7 @@
     if (dir && step) step.classList.add(dir === 'back' ? 'in-back' : 'in-fwd');
     renderBar();
     renderFoot();
-    avisarDente();
+    avisarPalco();
     window.scrollTo(0, 0);
     var inp = document.getElementById('inp');
     if (inp && st.k === 'q') {
@@ -632,7 +760,7 @@
     if (!WEB3FORMS_KEY && !ENDPOINT) { state.mode = 'whatsapp'; go(DONE); return; }
     var hp = document.getElementById('hp');
     var robo = !!(hp && hp.checked);
-    var nome = answerText(Q[0]);
+    var nome = firstName();
     var cam = propostaCurta();
     btn.disabled = true;
     btn.textContent = 'Enviando…';
@@ -646,7 +774,7 @@
       }, camposEmail()), function (j) { return j.success === true; }));
     }
     if (ENDPOINT) {
-      envios.push(post(ENDPOINT, { v: 3, nome: nome, proposta: cam, answers: state.a, text: texto(true), website: robo ? '1' : '' }, function (j) { return j.ok === true; }));
+      envios.push(post(ENDPOINT, { v: 4, nome: nome, proposta: cam, answers: state.a, text: texto(true), website: robo ? '1' : '' }, function (j) { return j.ok === true; }));
     }
     Promise.all(envios).then(function (res) {
       state.mode = res.some(Boolean) ? 'sent' : 'error';
@@ -691,6 +819,7 @@
       resumeStep = 0;
       clearArmed = false;
       fromReview = false;
+      montar();
       save();
       go(FIRST_Q, 'fwd');
     }
@@ -702,12 +831,13 @@
     if (q.type === 'radio' && e.target.name === 'q') {
       state.a[q.id] = e.target.value;
       main.querySelectorAll('.opt').forEach(function (l) { l.classList.toggle('on', l.querySelector('input').checked); });
+      if (q.id === 'quem') { montar(); avisarPalco(); }   // troca as perguntas, o tema e o palco na hora
       save();
       renderFoot();
       clearTimeout(autoTimer);
-      autoTimer = setTimeout(next, 320);
+      autoTimer = setTimeout(next, q.id === 'quem' ? 650 : 320);
     } else if (q.type === 'check' && e.target.name === 'q') {
-      /* opções como "Ainda não anunciamos" não combinam com as outras */
+      /* opções como "Ainda não anuncio" não combinam com as outras */
       if (e.target.checked && q.ex) {
         var exclusiva = q.ex.indexOf(e.target.value) !== -1;
         main.querySelectorAll('input[name="q"]').forEach(function (i) {

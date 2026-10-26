@@ -353,8 +353,11 @@ try {
     return { el, esq: r.esq, v: new THREE.Vector3(...r.p) };
   });
 
-  regua.style.setProperty('--mm', COMPRIMENTO.toFixed(2));
-  regua.style.setProperty('--coroa', (TOPO / COMPRIMENTO * 100).toFixed(2) + '%');
+  const aplicarRegua = () => {
+    regua.style.setProperty('--mm', COMPRIMENTO.toFixed(2));
+    regua.style.setProperty('--coroa', (TOPO / COMPRIMENTO * 100).toFixed(2) + '%');
+  };
+  const ativo = () => palco.dataset.mundo !== 'rosto';
 
   /* ---------- Estado animado ---------- */
   const cam = { tx: 0, ty: -3, tz: 0, r: 60, pol: 1.36, az: 0.55 };
@@ -445,6 +448,7 @@ try {
     const alvo = alvoDe(e);
     const dur = imediato || reduzir.matches || mesmo ? 0 : 1.15;
     palco.dataset.estado = e.k;
+    aplicarRegua();
     trocarHud(alvo, dur);
     ocioso = e.k !== 'q' && e.k !== 'review' && !reduzir.matches;
     const trocaDePlano = corte.sagital !== (alvo.corte === 'sagital');
@@ -527,6 +531,7 @@ try {
   let tempo = 0;
   function quadro() {
     const dt = Math.min(relogio.getDelta(), 0.05);
+    if (!ativo()) return;   // a Dra. Brenda está respondendo: o palco é do rosto
     tempo += dt;
     if (ocioso) rot.y += dt * 0.32;
     const balanco = reduzir.matches || ocioso || corte.sagital ? 0 : Math.sin(tempo * 0.7) * 0.05;
@@ -563,7 +568,7 @@ try {
   ir(window.__denteEstado || { k: 'welcome', total: 13 }, true);
   renderer.setAnimationLoop(quadro);
   palco.classList.add('pronto');
-  window.dente = { ir: e => ir(e, false) };
+  window.dente = { ir: e => ir(e, false), ativar: e => ir(e, true) };
 } catch (erro) {
   console.warn('Dente 3D indisponível; a página segue com o desenho estático.', erro);
 }
