@@ -373,9 +373,12 @@ try {
     const d = 2 * r * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.aspect * desvio;
     return { tx: d * Math.cos(az), ty, tz: -d * Math.sin(az), r, pol, az };
   }
-  function indice(e) {
-    const n = CORTES.length - 1;
-    return e.total > 1 ? Math.round(e.i * n / (e.total - 1)) : 0;
+  /* A primeira pergunta mostra a superfície; da segunda à última o corte desce sem parar, do esmalte ao ápice */
+  function profundidade(e) {
+    if (e.i <= 0 || e.total <= 2) return { p: 0, h: null, nome: NOMES[0] };
+    const f = 1 + (e.i - 1) * (CORTES.length - 2) / (e.total - 2);
+    const a = Math.floor(f), b = Math.min(a + 1, CORTES.length - 1), s = f - a;
+    return { p: f, h: CORTES[a] + (CORTES[b] - CORTES[a]) * s, nome: NOMES[Math.round(f)] };
   }
   function alvoDe(e) {
     const meio = (TOPO + APICE) / 2, largo = camera.aspect > 1;
@@ -387,10 +390,10 @@ try {
       return { cam: enquadrar(COMPRIMENTO + 12, 15, meio + (largo ? 2.2 : 0.8), 1.36, 0.55, largo ? 0.15 : 0.07), corte: 'nenhum', rot: null,
         nome: e.k === 'done' ? 'Exame concluído' : 'Vista geral', legenda: 'Molar inferior, ' + mm(COMPRIMENTO) };
     }
-    const p = indice(e), h = CORTES[p], rotacao = 0.35 + p * 0.21;
-    if (h === null) return { cam: enquadrar(21, 23, TOPO - 1.6, 0.62, 0.5, 0), corte: 'nenhum', rot: rotacao, nome: NOMES[p], prof: 0 };
+    const { p, h, nome } = profundidade(e), rotacao = 0.35 + p * 0.21;
+    if (h === null) return { cam: enquadrar(21, 23, TOPO - 1.6, 0.62, 0.5, 0), corte: 'nenhum', rot: rotacao, nome, prof: 0 };
     const tam = 25 - p * 0.45;
-    return { cam: enquadrar(tam, tam, h + tam * 0.12, 1.06, 0.5, 0), corte: h, rot: rotacao, nome: NOMES[p], prof: TOPO - h };
+    return { cam: enquadrar(tam, tam, h + tam * 0.12, 1.06, 0.5, 0), corte: h, rot: rotacao, nome, prof: TOPO - h };
   }
   const perto = (atual, alvo) => alvo + Math.round((atual - alvo) / DOIS_PI) * DOIS_PI;
   const pulsar = forte => gsap.to(brilho, { v: forte ? 1 : 0.42, duration: forte ? 0.2 : 0.8, overwrite: true });
