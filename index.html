@@ -162,7 +162,7 @@
   html[data-tema="brenda"] h1.display { font-size: 40px; line-height: 1.05; }
   html[data-tema="brenda"] .hud-camada { font-size: 26px; }
   html[data-tema="brenda"] .rev-sec h2 { font-size: 24px; }
-  .hint { margin: -10px 0 0; font-size: 15px; line-height: 1.4; color: var(--texto-2); }
+  .hint { margin: -10px 0 0; font-size: 15px; line-height: 1.4; color: var(--texto-2); overflow-wrap: anywhere; }
   .lead { margin: 0; font-size: 19px; line-height: 1.4; }
   .small { font-size: 15px; line-height: 1.4; color: var(--texto-2); }
   p { margin: 0; }
@@ -330,8 +330,8 @@
     ]},
     { id: 'proposta', t: 'A proposta', qs: [
       { id: 'proposta', type: 'radio', t: 'Qual proposta faz mais sentido agora?', o: [
-        { t: 'Proposta 1: site e landing pages', d: 'Site do Instituto, uma página para cada profissional e landing pages para os anúncios, com contato pelo WhatsApp e pelo formulário.', k: 'Proposta 1' },
-        { t: 'Proposta 2: site, landing pages e painel', d: 'Tudo da proposta 1, mais um painel que mostra todo dia os números do Google Ads e do Meta Ads e aponta sinais de atenção. O painel só lê os dados.', k: 'Proposta 2' },
+        { t: 'Proposta 1: site e landing pages', d: 'Site do Instituto e um subdomínio para cada profissional, com a página e as landing pages de cada um. O paciente chama pelo WhatsApp ou pelo formulário.', k: 'Proposta 1' },
+        { t: 'Proposta 2: site, landing pages e painel', d: 'Tudo da proposta 1, mais um painel com os números diários do Google Ads e do Meta Ads e os sinais de atenção, e um agente de IA que responde sobre as campanhas pelo Telegram ou pelo WhatsApp. Os dois só leem os dados.', k: 'Proposta 2' },
         { t: 'Ainda não sei', d: 'As próximas respostas ajudam a decidir.', k: 'Ainda não sabe' }
       ]}
     ]},
@@ -387,15 +387,15 @@
     { id: 'marca', t: 'Marca e site', qs: [
       { id: 'nome_inst', type: 'text', t: 'Qual vai ser o nome do Instituto?', hint: 'Se ainda não decidiram, escreva as opções que vocês estão pensando.', ph: 'Nome ou opções' },
       { id: 'marca', type: 'radio', t: 'Como o Instituto e a marca de cada profissional devem aparecer?', o: [
-        { t: 'O Instituto em primeiro plano', d: 'O site fala do Instituto, e os dois profissionais aparecem dentro dele.' },
-        { t: 'Cada profissional em primeiro plano', d: 'Cada um com a sua marca; o Instituto é o lugar que une os dois.' },
+        { t: 'O Instituto em primeiro plano', d: 'O site fala do Instituto, e os profissionais aparecem dentro dele.' },
+        { t: 'Cada profissional em primeiro plano', d: 'Cada um com a sua marca no próprio subdomínio, e o Instituto reúne todos.' },
         { t: 'Equilibrado', d: 'O Instituto tem a marca dele, e a página de cada um mantém a identidade própria.' },
         { t: 'Não sei, prefiro a sugestão de vocês', d: '' }
       ]},
       { id: 'marca_brenda', so: 'brenda', type: 'radio', t: 'Na sua página, a sua identidade continua?', hint: 'Hoje você usa o vinho e o monograma BS no Instagram.', o: ['Sim, igual ao Instagram', 'Sim, adaptada ao Instituto', 'Não, tudo no padrão do Instituto'] },
       { id: 'site_proprio', so: 'brenda', type: 'radio', t: 'Você já tem site ou domínio próprio?', o: ['Sim', 'Não', 'Não sei'] },
-      { id: 'dominio_comprado', type: 'radio', t: 'O domínio do Instituto já foi comprado?', hint: 'As landing pages ficam dentro dele, como nomedoinstituto.com.br/implante-zigomatico. Não precisa comprar outro domínio.', o: ['Sim', 'Ainda não', 'Não sei'],
-        v: { brenda: { hint: 'As landing pages ficam dentro dele, como nomedoinstituto.com.br/preenchimento-labial. Não precisa comprar outro domínio.' } } },
+      { id: 'dominio_comprado', type: 'radio', t: 'O domínio do Instituto já foi comprado?', hint: 'Cada profissional ganha um subdomínio com a sua página e as suas landing pages, como felipe.nomedoinstituto.com.br/implante-zigomatico. Quem entrar depois ganha outro, sem comprar domínio novo.', o: ['Sim', 'Ainda não', 'Não sei'],
+        v: { brenda: { hint: 'Cada profissional ganha um subdomínio com a sua página e as suas landing pages, como brenda.nomedoinstituto.com.br/preenchimento-labial. Quem entrar depois ganha outro, sem comprar domínio novo.' } } },
       { id: 'dominio', type: 'text', t: 'Qual é o domínio, ou que nomes vocês estão pensando?', ph: 'Ex.: www.nomedoinstituto.com.br' },
       { id: 'dominio_onde', type: 'radio', t: 'Onde o domínio está registrado?', o: ['Registro.br', 'GoDaddy', 'Hostinger', 'Outro lugar', 'Ainda não foi registrado', 'Não sei'] },
       { id: 'dominio_quem', type: 'radio', t: 'Quem gerencia o domínio e tem a senha de acesso?', o: ['Dr. Felipe', 'Dra. Brenda', 'Alguém da equipe', 'Uma agência ou um técnico', 'Ninguém ainda', 'Não sei'] },
@@ -411,8 +411,9 @@
       { id: 'aprova', type: 'radio', t: 'Quem aprova os textos e as imagens antes de publicar?', o: ['Cada um aprova a sua parte', 'Os dois aprovam tudo', 'Uma pessoa centraliza'] },
       { id: 'depoimentos', type: 'radio', t: 'Você tem depoimentos de pacientes com autorização por escrito?', hint: 'Fotos de antes e depois não entram no site do Instituto, por regra do CFO.', o: ['Sim', 'Tenho, mas sem autorização por escrito', 'Não tenho'] }
     ]},
-    { id: 'painel', t: 'Painel', qs: [
-      { id: 'painel_quem', type: 'check', t: 'Se escolherem o painel, quem vai acompanhar os números?', hint: 'Se não escolheram o painel, é só pular.', o: ['Dr. Felipe', 'Dra. Brenda', 'Gestor de tráfego ou agência', 'Alguém da recepção', 'Outra pessoa'] },
+    { id: 'painel', t: 'Painel e agente', qs: [
+      { id: 'painel_quem', type: 'check', t: 'Se escolherem a proposta 2, quem vai acompanhar os números e conversar com o agente?', hint: 'Se não escolheram a proposta 2, é só pular.', o: ['Dr. Felipe', 'Dra. Brenda', 'Gestor de tráfego ou agência', 'Alguém da recepção', 'Outra pessoa'] },
+      { id: 'agente', type: 'radio', t: 'Por onde vocês querem conversar com o agente?', hint: 'Ele responde sobre as campanhas com os números do painel. Pelo WhatsApp, usa um número só dele, separado do que atende os pacientes. Sem a proposta 2, é só pular.', o: ['Telegram', 'WhatsApp', 'Os dois', 'Ainda não sei'] },
       { id: 'contas', type: 'radio', t: 'Os seus anúncios ficam numa conta separada da do outro profissional?', hint: 'Isso define como o painel separa os números de cada um.', o: ['Sim, tenho a minha', 'Tudo numa conta só', 'Ainda não tenho conta de anúncio', 'Não sei'] }
     ]},
     { id: 'fim', t: 'Para terminar', qs: [
@@ -539,8 +540,8 @@
       '<h1 class="display" tabindex="-1">Qual proposta faz sentido para vocês?</h1>' +
       '<p class="lead">Depois de ver o vídeo, responda por aqui. Cada um responde a sua parte, e as respostas vão direto para o Gabriel.</p>' +
       '<ul class="destaques">' +
-        destaque('site', 'Proposta 1: site e landing pages', 'Site do Instituto, páginas do Dr.&nbsp;Felipe e da Dra.&nbsp;Brenda e landing pages para os anúncios, com contato pelo WhatsApp e pelo formulário.') +
-        destaque('painel', 'Proposta 2: site, landing pages e painel', 'Tudo da proposta 1, mais um painel que mostra todo dia os números do Google Ads e do Meta Ads. O painel só lê os dados.') +
+        destaque('site', 'Proposta 1: site e landing pages', 'Site do Instituto e um subdomínio para cada profissional, com a página e as landing pages de cada um, e contato pelo WhatsApp e pelo formulário.') +
+        destaque('painel', 'Proposta 2: site, landing pages e painel', 'Tudo da proposta 1, mais um painel que mostra todo dia os números do Google Ads e do Meta Ads, e um agente de IA que responde sobre as campanhas pelo Telegram ou pelo WhatsApp. Os dois só leem os dados.') +
         destaque('tempo', 'Uns 12 minutos, sem reunião', 'Cerca de ' + maior + ' perguntas, quase todas de tocar numa opção. Com elas o projeto já começa.') +
         destaque('corte', p === 'brenda' ? 'Uma camada a cada resposta' : 'Um corte a cada resposta',
           p === 'brenda' ? 'O planejamento facial acompanha o questionário, camada por camada.' : 'O exame acompanha o questionário: o dente para o Dr.&nbsp;Felipe e o planejamento facial para a Dra.&nbsp;Brenda.') +
